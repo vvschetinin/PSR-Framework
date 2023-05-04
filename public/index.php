@@ -11,6 +11,7 @@ use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\AuthController;
 // Один класс в одном контроллере
+use App\Http\Action\HomeAction;
 use App\Http\Action\ContactAction;
 use App\Http\Action\Blog\IndexAction;
 use App\Http\Action\Blog\ShowAction;
@@ -23,7 +24,7 @@ require 'vendor/autoload.php';
 $routes = new RouteCollection();
 
 // Несколько классов обьединенные в одном контроллере
-$routes->get('home', '/', [new SiteController(), 'home']);
+$routes->get('home', '/', new HomeAction());
 $routes->get('about', '/about', [new SiteController(), 'about']);
 $routes->get('auth', '/auth', [new AuthController(), 'auth']);
 // Один класс в одном контроллере передается как функция
