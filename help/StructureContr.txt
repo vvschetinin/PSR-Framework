@@ -1,0 +1,27 @@
+Разнесение по разным классам контроллеров сайта
+
+class SiteController 
+{
+  public function actionIndex() {}
+  public function actionAbout() {}
+}
+
+class ContactController 
+{
+  public function actionIndex() {}
+  public function actionAbout() {}
+}
+
+class AuthController 
+{
+  public function actionIndex() {}
+  public function actionAbout() {}
+}
+
+class SignupController 
+{
+  public function actionIndex() {}
+  public function actionAbout() {}
+}
+
+// ...
