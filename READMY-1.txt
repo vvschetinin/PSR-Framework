@@ -185,6 +185,5 @@ Script phpunit --colors=always handling the test event returned with error code 
 
 ========================================
 
-Завершение в 02:05
+Завершение в 02:18 Модификация подключения классов
 
-Продолжить с 01:55

@@ -3,18 +3,10 @@
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use Framework\Http\Router\RouteCollection;
 use Framework\Http\Router\Router;
+use Framework\Http\Router\ActionResolver;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
-
-// Несколько классов обьединенные в одном контроллере
-use App\Http\Controllers\SiteController;
-use App\Http\Controllers\AuthController;
-// Один класс в одном контроллере
-use App\Http\Action\HomeAction;
-use App\Http\Action\ContactAction;
-use App\Http\Action\Blog\IndexAction;
-use App\Http\Action\Blog\ShowAction;
 
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
@@ -23,16 +15,17 @@ require 'vendor/autoload.php';
 
 $routes = new RouteCollection();
 
-// Несколько классов обьединенные в одном контроллере
-$routes->get('home', '/', new HomeAction());
-$routes->get('about', '/about', [new SiteController(), 'about']);
-$routes->get('auth', '/auth', [new AuthController(), 'auth']);
 // Один класс в одном контроллере передается как функция
-$routes->get('contact', '/contact', new ContactAction());
-$routes->get('blog', '/blog', new IndexAction());
-$routes->get('blog_show', '/blog/{id}', new ShowAction());
+$routes->get('home', '/', App\Http\Action\HomeAction::class);
+$routes->get('contact', '/contact', App\Http\Action\ContactAction::class);
+$routes->get('blog', '/blog', App\Http\Action\Blog\IndexAction::class);
+$routes->get('blog_show', '/blog/{id}', App\Http\Action\Blog\ShowAction::class);
+// Несколько классов обьединенные в одном контроллере
+$routes->get('about', '/about', [App\Http\Controllers\SiteController::class, 'about']);
+$routes->get('auth', '/auth', [App\Http\Controllers\AuthController::class, 'auth']);
 
 $router = new Router($routes);
+$resolver = new ActionResolver();
 
 // Running
 
@@ -42,8 +35,7 @@ try {
   foreach ($result->getAttributes() as $attribute => $value) {
     $request = $request->withAttribute($attribute, $value);
   }
-  // @var callable $action 
-  $action = $result->getHandler();
+  $action = $resolver->resolve($result->getHandler());
   $response = $action($request);
 } catch (RequestNotMatchedException $e) {
   $response = new JsonResponse(['error' => 'Undefined Page'], 404);
