@@ -1,9 +1,8 @@
 <?php
 
 use Framework\Http\Router\Exception\RequestNotMatchedException;
-use Framework\Http\Router\RouteCollection;
-use Framework\Http\Router\SimpleRouter;
-use Framework\Http\Router\ActionResolver;
+use Framework\Http\ActionResolver;
+use Framework\Http\Router\AuraRouterAdapter;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
@@ -13,7 +12,8 @@ require 'vendor/autoload.php';
 
 // INIT
 
-$routes = new RouteCollection();
+$aura = new Aura\Router\RouterContainer();
+$routes = $aura->getMap();
 
 // Один класс в одном контроллере передается как функция
 $routes->get('home', '/', App\Http\Action\HomeAction::class);
@@ -24,7 +24,7 @@ $routes->get('blog_show', '/blog/{id}', App\Http\Action\Blog\ShowAction::class, 
 $routes->get('about', '/about', [App\Http\Controllers\SiteController::class, 'about']);
 $routes->get('auth', '/auth', [App\Http\Controllers\AuthController::class, 'auth']);
 
-$router = new SimpleRouter($routes);
+$router = new AuraRouterAdapter($aura);
 $resolver = new ActionResolver();
 
 // Running

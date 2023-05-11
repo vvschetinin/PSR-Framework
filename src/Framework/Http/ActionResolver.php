@@ -1,5 +1,5 @@
 <?php 
-namespace Framework\Http\Router;
+namespace Framework\Http;
 
 class ActionResolver 
 {
