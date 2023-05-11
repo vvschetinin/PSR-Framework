@@ -15,6 +15,7 @@
   },
   "require": {
     "php": ">=7.1.0",
+    "aura/router": "^3.2",
     "laminas/laminas-diactoros": "^2.25",
     "laminas/laminas-httphandlerrunner": "^2.6"
   },

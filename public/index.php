@@ -2,7 +2,7 @@
 
 use Framework\Http\Router\Exception\RequestNotMatchedException;
 use Framework\Http\Router\RouteCollection;
-use Framework\Http\Router\Router;
+use Framework\Http\Router\SimpleRouter;
 use Framework\Http\Router\ActionResolver;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -19,12 +19,12 @@ $routes = new RouteCollection();
 $routes->get('home', '/', App\Http\Action\HomeAction::class);
 $routes->get('contact', '/contact', App\Http\Action\ContactAction::class);
 $routes->get('blog', '/blog', App\Http\Action\Blog\IndexAction::class);
-$routes->get('blog_show', '/blog/{id}', App\Http\Action\Blog\ShowAction::class);
+$routes->get('blog_show', '/blog/{id}', App\Http\Action\Blog\ShowAction::class, ['id' => '\d+']);
 // Несколько классов обьединенные в одном контроллере
 $routes->get('about', '/about', [App\Http\Controllers\SiteController::class, 'about']);
 $routes->get('auth', '/auth', [App\Http\Controllers\AuthController::class, 'auth']);
 
-$router = new Router($routes);
+$router = new SimpleRouter($routes);
 $resolver = new ActionResolver();
 
 // Running
