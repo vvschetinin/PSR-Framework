@@ -191,3 +191,8 @@ Script phpunit --colors=always handling the test event returned with error code 
 
 Aura Router
 https://github.com/auraphp/Aura.Router/blob/3.x/docs/index.md 
+
+Завершение 2-го разделв
+
+========================================
+
